@@ -27,25 +27,31 @@ public class GitHub {
 	public void getRepository () throws IOException, InvalidRemoteException, TransportException, GitAPIException{
 		String URI = repoName + ".git";
 		String[] URIinfo = URI.split("/");
-		String dir = URIinfo[URIinfo.length-1].substring(0, URIinfo[URIinfo.length-1].length()-4);
+		String enderecoDir = URIinfo[URIinfo.length-1].substring(0, URIinfo[URIinfo.length-1].length()-4);
 
 		//Clone the respository in this project's directory
-		String direc = System.getProperty("user.dir");
-		dir = direc + "-Repository-" + dir;
+		String enderecoUser = System.getProperty("user.dir");
+		enderecoDir = enderecoUser + "-Repository-" + enderecoDir;
+		File diretorio = new File (enderecoDir);
+		if(!diretorio.exists()) {
+			git = Git.cloneRepository()
+					.setURI( URI )
+					.setDirectory( new File(enderecoDir) )
+					.call();
 
-		git = Git.cloneRepository()
-				.setURI( URI )
-				.setDirectory( new File(dir) )
-				.call();
-
-		System.out.println("\nRepository cloned to the root directory.\n");
-		File gitDir = new File(dir + "/.git");
+			System.out.println("\nRepository cloned to the root directory.\n");
+		}else {
+			File gitDir = new File(enderecoDir + "/.git");
+			git = Git.open(gitDir);
+		}
+		/*
+		File gitDir = new File(enderecoDir + "/.git");
 
 		RepositoryBuilder builder = new RepositoryBuilder();
 
 		gitRepository = builder.setGitDir(gitDir).readEnvironment()
 				.findGitDir().build();
-
+*/
 	}
 
 	public Iterator<RevCommit> getCommits() throws NoHeadException, GitAPIException{

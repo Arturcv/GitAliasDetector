@@ -1,5 +1,7 @@
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Scanner;
 
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -24,6 +26,22 @@ public class AliasDetector {
 		try {
 			gitHub = new GitHub(repoName);
 			Iterator<RevCommit> commits = gitHub.getCommits();
+			
+			Usuarios usuarios = new Usuarios();
+			while(commits.hasNext()) {
+				RevCommit commit = commits.next();
+				String nome = commit.getAuthorIdent().getName();
+				String email = commit.getAuthorIdent().getEmailAddress();
+				
+				usuarios.addUsuario(nome, email);
+				
+				//System.out.println(commit.getAuthorIdent().getName() + " ; " + commit.getAuthorIdent().getEmailAddress());
+			}
+			
+			List<Alias> alias = usuarios.verificarAlias();
+			
+			
+			
 		} catch (InvalidRemoteException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
