@@ -38,9 +38,13 @@ public class AliasDetector {
 				//System.out.println(commit.getAuthorIdent().getName() + " ; " + commit.getAuthorIdent().getEmailAddress());
 			}
 			
-			List<Alias> alias = usuarios.verificarAlias();
+			List<Alias> aliasList = usuarios.verificarAlias();
 			
-			
+			String imprimir = "";
+			for(Alias alias : aliasList) {
+				imprimir += alias.imprimir();
+			}
+			System.out.println(imprimir);
 			
 		} catch (InvalidRemoteException e1) {
 			// TODO Auto-generated catch block
