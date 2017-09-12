@@ -8,7 +8,10 @@ public class Usuario {
 	public Usuario (String nome, String email) {
 		this.nome = nome;
 		this.email = email;
-		this.prefixo = email.substring(0, email.indexOf("@"));
+		if(email.indexOf("@") < 0)
+			this.prefixo = email;
+		else
+			this.prefixo = email.substring(0, email.indexOf("@"));
 		this.temAlias = false;
 	}
 	
@@ -38,6 +41,14 @@ public class Usuario {
 	}
 	
 	public boolean equal(Usuario commit) {
-		return (nome == commit.getNome()) && (email == commit.getEmail());
+		return (nome.equalsIgnoreCase(commit.getNome())) && (email.equalsIgnoreCase(commit.getEmail()));
+	}
+	
+	public String imprimir() {
+		String texto = "";
+		//texto += "Nome do Usuario: " + nome + "\n";
+		//texto += "E-mail: " + email + "\n";
+		texto += nome + " ; " + email;
+		return texto;
 	}
 }
